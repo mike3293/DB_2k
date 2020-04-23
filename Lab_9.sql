@@ -1,6 +1,6 @@
 USE LAB5_UNIVER
 
-declare @c char='c',
+declare @c char,
 		@v varchar='char',
 		@d datetime,
 		@time time,
@@ -38,15 +38,15 @@ else print 'Общая вместимость '+cast(@y1 as nvarchar(10))
 
 ------------------------
 
- print 'Число обработанных строк          : '+ cast(@@rowcount as varchar(12)); 
- print 'Версия SQL Server         : '+ cast(@@version as varchar(12));
+ print 'Число обработанных строк: '+ cast(@@rowcount as varchar(12)); 
+ print 'Версия SQL Server: '+ cast(@@version as varchar(1000));
  print 'Системный идентификатор процесса, назначенный сервером текущему подключению: '+ 
 		cast(@@spid as varchar(12)); 
- print 'Код последней ошибки            : '+ cast(@@error as varchar(12));
- print 'Имя сервера   : '+ cast(@@servername as varchar(12));
- print 'Уровень вложенности транзакции           : '+ cast(@@trancount as varchar(12));
- print 'Проверка результата считывания строк результирующего набора           : '+ cast(@@fetch_status as varchar(12));
- print 'Уровень вложенности текущей процедуры           : '+ cast(@@nestlevel as varchar(12));
+ print 'Код последней ошибки: '+ cast(@@error as varchar(12));
+ print 'Имя сервера: '+ cast(@@servername as varchar(50));
+ print 'Уровень вложенности транзакции: '+ cast(@@trancount as varchar(12));
+ print 'Проверка результата считывания строк результирующего набора: '+ cast(@@fetch_status as varchar(12));
+ print 'Уровень вложенности текущей процедуры: '+ cast(@@nestlevel as varchar(12));
 
 
  ------------------------
@@ -63,15 +63,11 @@ declare @l nvarchar(15)='Фамилия', @k nvarchar(15)='Имя', @m nvarchar(15)='Отчес
 print @l+' '+substring(@k, 1,1)+'.'+substring(@m, 1,1) +'.'
 
 
-declare @month nvarchar(10) = '05';
+declare @month nvarchar(10) = month(getdate()) + 1;
 select [name], bday,2020 - cast(substring(Cast(BDAY as nvarchar(10)),1,4) as int) as AGE from STUDENT
-where substring(Cast(BDAY as nvarchar(10)),6,2) = @month;
+where month(BDAY) = @month;
 
-
-
--- поиск дня недели, в который студенты некоторой группы сдавали экзамен по СУБД.
-
-
+SELECT DATENAME(WEEKDAY, PDATE) from PROGRESS where SUBJECT = 'СУБД'
 --------------------------
 
 declare @x1 int=(select count(*) from AUDITORIUM);
@@ -85,7 +81,6 @@ begin
 print 'Количество аудиторий меньше 5';
 print 'Количество='+cast(@x1 as varchar(10));
 end;
-
 
 --------------------------
 
@@ -120,13 +115,13 @@ declare @i int = 0;
 while @i<10
 begin 
 insert #example(id,fild1,fild2)
-	values(floor(30000*rand()), floor(10*rand()),replicate('string',10));
+	values(floor(30000*rand()), floor(10*rand()),replicate('some text',3));
 set @i=@i+1;
 end;
 
 select * from #example
 
-
+drop table #example
 
 -------------------------
 
@@ -142,7 +137,7 @@ declare @x int = 1
 
 
 begin try	
-	update dbo.TEACHER set GENDER = 7
+	update dbo.TEACHER set GENDER = 2
 		where GENDER = 1
 end try
 begin catch

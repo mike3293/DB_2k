@@ -41,3 +41,7 @@ INSERT into STUDENT
 	STUDENT_NAME nvarchar(20),
     AVER_VALUE as ID*ID
 )
+
+use G_MyBase
+
+insert into Deliveries values (6F9629FF-8B86-D011-B42D-00CF4FC964F1,'BSU','exams',1, 10, getdate(), 'fast')

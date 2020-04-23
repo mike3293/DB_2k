@@ -1,4 +1,4 @@
-use TMPS_UNIVER
+use LAB5_UNIVER
 
 exec sp_helpindex 'auditorium_type'
 exec sp_helpindex 'auditorium'
@@ -35,7 +35,7 @@ checkpoint;
 dbcc dropcleanbuffers;
 
 create clustered index #example_cl on #example(id asc)
-
+drop index #example_cl on #example
 
 ----------------------------------------------------
 
@@ -140,10 +140,10 @@ insert #example5(id,fild2)
 set @i=@i+1;
 end;
 
+create index #example5_id on #example5(id)
+
 ALTER index #example5_id on #example5 reorganize;
 ALTER index #example5_id on #example5 rebuild with (online = off);
-
-create index #example5_id on #example5(id)
 
 -------------???????????????????????????
 use tempdb;
@@ -186,4 +186,11 @@ SELECT name [Индекс], avg_fragmentation_in_percent [Фрагментация (%)]
                         ON ss.object_id = ii.object_id and ss.index_id = ii.index_id  
                                                             WHERE name is not null;
 
+-------------------
+
+use G_MyBase
+
+exec sp_helpindex 'Customers'
+exec sp_helpindex 'Deliveries'
+exec sp_helpindex 'Products'
 
